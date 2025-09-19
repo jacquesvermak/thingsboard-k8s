@@ -1,0 +1,40 @@
+# Logs
+*.log
+*.out
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Backup files
+*.bak
+*.backup
+*-backup.*
+*-original.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Kubernetes secrets (if containing sensitive data)
+# Uncomment if you don't want to commit actual secret values
+# secrets/*
+
+# Helm charts
+charts/
+Chart.lock
+
+# Temporary exports
+*-exported.*
+*-corrected.*
+
+# Personal notes
+notes.txt
+TODO.md

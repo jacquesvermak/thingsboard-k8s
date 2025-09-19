@@ -1,0 +1,38 @@
+apiVersion: v1
+data:
+  CASSANDRA_URL: thingsboard-cassandra:9042
+  CASSANDRA_USE_CREDENTIALS: "true"
+  CASSANDRA_USERNAME: cassandra
+  DATABASE_TS_LATEST_TYPE: cassandra
+  DATABASE_TS_TYPE: cassandra
+  PERSIST_STATE_TO_TELEMETRY: "true"
+  QUEUE_RULEENGINE_PROMETHEUSSTATS_ENABLED: "true"
+  SPRING_DATASOURCE_PASSWORD: VF8sjO1yR68W1LxPzwoh
+  SPRING_DATASOURCE_URL: jdbc:postgresql://thingsboard-db-qa-k8s.cdhob2fjfmcq.af-south-1.rds.amazonaws.com:5432/thingsboard
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_DRIVER_CLASS_NAME: org.postgresql.Driver
+  SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+  SQL_ATTRIBUTES_BATCH_THREADS: "30"
+  SQL_EVENTS_BATCH_THREADS: "10"
+  SQL_TIMESCALE_BATCH_THREADS: "10"
+  SQL_TS_BATCH_THREADS: "10"
+  SQL_TS_LATEST_BATCH_THREADS: "10"
+  TB_QUEUE_RE_MAIN_PROCESSING_STRATEGY_TYPE: SKIP_ALL_FAILURES_AND_TIMED_OUT
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  creationTimestamp: "2024-12-05T14:52:06Z"
+  labels:
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: thingsboard
+    app.kubernetes.io/version: 3.5.1
+    helm.sh/chart: thingsboard-0.1.4-rc.51
+    k8slens-edit-resource-version: v1
+    name: thingsboard-node-db-config
+  name: thingsboard-node-db-config
+  namespace: thingsboard-qa
+  resourceVersion: "210358738"
+  uid: cebbc4a9-6be9-4078-bcb8-09439bb3a164

@@ -1,0 +1,255 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: thingsboard-kafka
+  namespace: thingsboard-qa
+  uid: 4d9377fd-eebe-45cd-ae86-d00a339d1388
+  resourceVersion: '195337083'
+  generation: 371
+  creationTimestamp: '2024-12-05T14:52:06Z'
+  labels:
+    app.kubernetes.io/component: kafka
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kafka
+    app.kubernetes.io/version: 3.3.1
+    helm.sh/chart: kafka-19.1.5
+    k10.kasten.io/actionType: snapshot
+    k10.kasten.io/appName: thingsboard-qa
+    k10.kasten.io/policyName: thingsboard-qa-backup
+    k8slens-edit-resource-version: v1
+  annotations:
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  selfLink: /apis/apps/v1/namespaces/thingsboard-qa/statefulsets/thingsboard-kafka
+status:
+  observedGeneration: 371
+  replicas: 4
+  readyReplicas: 4
+  currentReplicas: 4
+  updatedReplicas: 4
+  currentRevision: thingsboard-kafka-7996fd69c8
+  updateRevision: thingsboard-kafka-7996fd69c8
+  collisionCount: 0
+  availableReplicas: 4
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: kafka
+      app.kubernetes.io/instance: thingsboard
+      app.kubernetes.io/name: kafka
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: kafka
+        app.kubernetes.io/instance: thingsboard
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kafka
+        app.kubernetes.io/version: 3.3.1
+        helm.sh/chart: kafka-19.1.5
+      annotations:
+        kubectl.kubernetes.io/restartedAt: '2025-08-29T09:02:05+02:00'
+    spec:
+      volumes:
+        - name: scripts
+          configMap:
+            name: thingsboard-kafka-scripts
+            defaultMode: 493
+        - name: logs
+          emptyDir: {}
+        - name: gc-logs
+          emptyDir: {}
+      containers:
+        - name: kafka
+          image: docker.io/bitnami/kafka:3.8.0-debian-12-r3
+          command:
+            - /scripts/setup.sh
+          ports:
+            - name: kafka-client
+              containerPort: 9092
+              protocol: TCP
+            - name: kafka-internal
+              containerPort: 9093
+              protocol: TCP
+          env:
+            - name: BITNAMI_DEBUG
+              value: 'false'
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+              value: thingsboard-zookeeper
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: INTERNAL
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+              value: INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT
+            - name: KAFKA_CFG_LISTENERS
+              value: INTERNAL://:9093,CLIENT://:9092
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
+              value: >-
+                INTERNAL://$(MY_POD_NAME).thingsboard-kafka-headless.thingsboard-qa.svc.cluster.local:9093,
+                CLIENT://$(MY_POD_NAME).thingsboard-kafka-headless.thingsboard-qa.svc.cluster.local:9092
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: 'yes'
+            - name: KAFKA_CFG_LOG_CLEANUP_POLICY
+              value: delete
+            - name: KAFKA_CFG_LOG_ROLL_HOURS
+              value: '12'
+            - name: KAFKA_CFG_LOG_CLEANER_ENABLE
+              value: 'true'
+            - name: KAFKA_CFG_BATCH_SIZE
+              value: '98304'
+            - name: KAFKA_CFG_LINGER_MS
+              value: '75'
+            - name: KAFKA_CFG_REPLICA_FETCH_MAX_BYTES
+              value: '7864320'
+            - name: KAFKA_DEFAULT_REPLICATION_FACTOR
+              value: '1'
+            - name: KAFKA_MIN_INSYNC_REPLICAS
+              value: '1'
+            - name: KAFKA_ZOOKEEPER_PROTOCOL
+              value: PLAINTEXT
+            - name: KAFKA_VOLUME_DIR
+              value: /bitnami/kafka
+            - name: KAFKA_LOG_DIR
+              value: /opt/bitnami/kafka/logs
+            - name: KAFKA_CFG_DELETE_TOPIC_ENABLE
+              value: 'true'
+            - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+              value: 'true'
+            - name: KAFKA_HEAP_OPTS
+              value: '-Xmx1024m -Xms1024m'
+            - name: KAFKA_CFG_LOG_FLUSH_INTERVAL_MESSAGES
+              value: '10000'
+            - name: KAFKA_CFG_LOG_FLUSH_INTERVAL_MS
+              value: '1000'
+            - name: KAFKA_CFG_LOG_RETENTION_BYTES
+              value: '268435456'
+            - name: KAFKA_CFG_LOG_RETENTION_CHECK_INTERVAL_MS
+              value: '300000'
+            - name: KAFKA_CFG_LOG_RETENTION_HOURS
+              value: '96'
+            - name: KAFKA_CFG_MESSAGE_MAX_BYTES
+              value: '1000012'
+            - name: KAFKA_CFG_LOG_SEGMENT_BYTES
+              value: '1073741824'
+            - name: KAFKA_CFG_LOG_DIRS
+              value: /bitnami/kafka/data
+            - name: KAFKA_CFG_DEFAULT_REPLICATION_FACTOR
+              value: '1'
+            - name: KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: '1'
+            - name: KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              value: '1'
+            - name: KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR
+              value: '1'
+            - name: KAFKA_CFG_NUM_IO_THREADS
+              value: '8'
+            - name: KAFKA_CFG_NUM_NETWORK_THREADS
+              value: '3'
+            - name: TB_QUEUE_KAFKA_PARTITIONS
+              value: '10'
+            - name: KAFKA_CFG_NUM_RECOVERY_THREADS_PER_DATA_DIR
+              value: '1'
+            - name: KAFKA_CFG_SOCKET_RECEIVE_BUFFER_BYTES
+              value: '102400'
+            - name: KAFKA_CFG_SOCKET_REQUEST_MAX_BYTES
+              value: '104857600'
+            - name: KAFKA_CFG_SOCKET_SEND_BUFFER_BYTES
+              value: '102400'
+            - name: KAFKA_CFG_ZOOKEEPER_CONNECTION_TIMEOUT_MS
+              value: '6000'
+            - name: KAFKA_CFG_AUTHORIZER_CLASS_NAME
+            - name: KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND
+              value: 'true'
+            - name: KAFKA_CFG_SUPER_USERS
+              value: User:admin
+            - name: KAFKA_CFG_NUM_PARTITIONS
+              value: '10'
+            - name: KAFKA_BROKER_ID_COMMAND
+              value: sh -c 'hostname | awk -F"-" "{print \$NF}"'
+          resources:
+            limits:
+              cpu: '6'
+              memory: 25Gi
+            requests:
+              cpu: '3'
+              memory: 20Gi
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/kafka
+            - name: logs
+              mountPath: /opt/bitnami/kafka/logs
+            - name: scripts
+              mountPath: /scripts/setup.sh
+              subPath: setup.sh
+            - name: gc-logs
+              mountPath: /bitnami/gc-logs
+          readinessProbe:
+            tcpSocket:
+              port: kafka-client
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 6
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: thingsboard-node-sa
+      serviceAccount: thingsboard-node-sa
+      securityContext:
+        fsGroup: 1001
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: kafka
+                    app.kubernetes.io/instance: thingsboard
+                    app.kubernetes.io/name: kafka
+                topologyKey: kubernetes.io/hostname
+      schedulerName: default-scheduler
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: data
+        creationTimestamp: null
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  serviceName: thingsboard-kafka-headless
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
+  revisionHistoryLimit: 10
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain

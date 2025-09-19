@@ -1,0 +1,575 @@
+{
+  "version": 1,
+  "partitions": [
+    {
+      "topic": "calculated_field.notifications.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "js_eval.requests",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "js_eval.responses.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_cf_event.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_cf_event.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_cf_event.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_cf_event.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_cf_event.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_cf_event.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_cf_event.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_cf_event.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_cf_event.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_cf_event.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_core.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_core.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_core.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_core.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_core.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_core.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_core.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_core.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_core.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_core.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_core.notifications.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_edge.0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_edge.1",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_edge.2",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_edge.3",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_edge.4",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_edge.5",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_edge.6",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_edge.7",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_edge.8",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_edge.9",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_edge.notifications.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_housekeeper",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_housekeeper.reprocessing",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_ie.api.requests",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_integration_executor.notifications.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_ota_package",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.Main2_split.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.hp.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.main.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.notifications.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.1",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.2",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.3",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.4",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.5",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.6",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.7",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.8",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_rule_engine.sq.9",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.api.requests",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_transport.api.responses.tb-http-transport",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.api.responses.thingsboard-coap-transport-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_transport.api.responses.thingsboard-coap-transport-1",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.api.responses.thingsboard-coap-transport-2",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_transport.api.responses.thingsboard-coap-transport-3",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.api.responses.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_transport.notifications.tb-http-transport",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.notifications.thingsboard-coap-transport-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_transport.notifications.thingsboard-coap-transport-1",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.notifications.thingsboard-coap-transport-2",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_transport.notifications.thingsboard-coap-transport-3",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_transport.notifications.thingsboard-node-0",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_usage_stats.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_usage_stats.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_usage_stats.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_usage_stats.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_usage_stats.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_usage_stats.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_usage_stats.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_usage_stats.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_usage_stats.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_usage_stats.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_version_control.0",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_version_control.1",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_version_control.2",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_version_control.3",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_version_control.4",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_version_control.5",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_version_control.6",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_version_control.7",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    },
+    {
+      "topic": "tb_version_control.8",
+      "partition": 0,
+      "replicas": [0, 1, 2]
+    },
+    {
+      "topic": "tb_version_control.9",
+      "partition": 0,
+      "replicas": [1, 0, 2]
+    }
+  ]
+}

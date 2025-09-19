@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thingsboard-web-ui
+  namespace: thingsboard-qa
+  uid: d490577c-3c30-4886-a33e-bd04cd5acc1e
+  resourceVersion: '194931140'
+  generation: 64
+  creationTimestamp: '2024-12-05T14:52:06Z'
+  labels:
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: thingsboard
+    app.kubernetes.io/version: 3.5.1
+    helm.sh/chart: thingsboard-0.1.4-rc.51
+    k10.kasten.io/actionType: snapshot
+    k10.kasten.io/appName: thingsboard-qa
+    k10.kasten.io/policyName: thingsboard-qa-backup
+    k8slens-edit-resource-version: v1
+    tags.datadoghq.com/service: tb-ui
+    tags.datadoghq.com/version: 4.0.1PE
+  annotations:
+    deployment.kubernetes.io/revision: '21'
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":[""],"port":443,"protocol":"HTTPS","serviceName":"thingsboard-qa:thingsboard-webui","ingressName":"thingsboard-qa:tb-ingress","hostname":"thingsboard.qa.stagezero.co.za","path":"/static(/|$)(.*)","allNodes":false},{"addresses":[""],"port":443,"protocol":"HTTPS","serviceName":"thingsboard-qa:thingsboard-webui","ingressName":"thingsboard-qa:tb-ingress","hostname":"thingsboard.qa.stagezero.co.za","path":"/","allNodes":false}]
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  selfLink: /apis/apps/v1/namespaces/thingsboard-qa/deployments/thingsboard-web-ui
+status:
+  observedGeneration: 64
+  replicas: 1
+  updatedReplicas: 1
+  readyReplicas: 1
+  availableReplicas: 1
+  conditions:
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2025-08-25T17:56:58Z'
+      lastTransitionTime: '2025-08-25T17:56:58Z'
+      reason: MinimumReplicasAvailable
+      message: Deployment has minimum availability.
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2025-08-28T17:57:07Z'
+      lastTransitionTime: '2024-12-05T14:52:06Z'
+      reason: NewReplicaSetAvailable
+      message: ReplicaSet "thingsboard-web-ui-799679d4b4" has successfully progressed.
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: thingsboard-webui
+      app.kubernetes.io/name: thingsboard-webui
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        admission.datadoghq.com/enabled: 'true'
+        app.kubernetes.io/instance: thingsboard-webui
+        app.kubernetes.io/name: thingsboard-webui
+        tags.datadoghq.com/service: tb-ui
+        tags.datadoghq.com/version: 4.0.1PE
+      annotations:
+        kubectl.kubernetes.io/restartedAt: '2025-08-15T12:58:19+02:00'
+    spec:
+      containers:
+        - name: thingsboard
+          image: docker.io/thingsboard/tb-pe-web-ui:4.0.1PE
+          ports:
+            - name: http
+              containerPort: 8084
+              protocol: TCP
+          env:
+            - name: TB_SERVICE_TYPE
+              value: web
+            - name: HTTP_BIND_ADDRESS
+              value: 0.0.0.0
+            - name: HTTP_BIND_PORT
+              value: '8084'
+            - name: TB_ENABLE_PROXY
+              value: 'false'
+            - name: TB_HOST
+              value: 'thingsboard-node'
+            - name: TB_PORT
+              value: '8080'
+            - name: LOGGER_LEVEL
+              value: info
+            - name: LOG_FOLDER
+              value: logs
+            - name: LOGGER_FILENAME
+              value: tb-web-ui-%DATE%.log
+            - name: DOCKER_MODE
+              value: 'true'
+            - name: SWAGGER_ENABLED
+              value: 'true'
+          resources:
+            limits:
+              memory: 2Gi
+            requests:
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /index.html
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          securityContext: {}
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: thingsboard-node-sa
+      serviceAccount: thingsboard-node-sa
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

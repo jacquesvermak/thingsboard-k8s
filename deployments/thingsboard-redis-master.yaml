@@ -1,0 +1,183 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thingsboard-redis-master
+  namespace: thingsboard-qa
+  uid: 10948a03-5ddd-46a6-9710-c5da06ad12ca
+  resourceVersion: '181675161'
+  generation: 39
+  creationTimestamp: '2024-12-05T14:52:06Z'
+  labels:
+    app.kubernetes.io/component: master
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 6.2.6
+    helm.sh/chart: redis-16.4.5
+    k10.kasten.io/actionType: snapshot
+    k10.kasten.io/appName: thingsboard-qa
+    k10.kasten.io/policyName: thingsboard-qa-backup
+  annotations:
+    deployment.kubernetes.io/revision: '7'
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  selfLink: /apis/apps/v1/namespaces/thingsboard-qa/deployments/thingsboard-redis-master
+status:
+  observedGeneration: 39
+  replicas: 3
+  updatedReplicas: 3
+  readyReplicas: 3
+  availableReplicas: 3
+  conditions:
+    - type: Progressing
+      status: 'True'
+      lastUpdateTime: '2025-06-19T18:18:15Z'
+      lastTransitionTime: '2024-12-05T14:52:06Z'
+      reason: NewReplicaSetAvailable
+      message: >-
+        ReplicaSet "thingsboard-redis-master-7f5f955d7" has successfully
+        progressed.
+    - type: Available
+      status: 'True'
+      lastUpdateTime: '2025-08-11T06:12:56Z'
+      lastTransitionTime: '2025-08-11T06:12:56Z'
+      reason: MinimumReplicasAvailable
+      message: Deployment has minimum availability.
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: master
+      app.kubernetes.io/instance: thingsboard
+      app.kubernetes.io/name: redis
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: master
+        app.kubernetes.io/instance: thingsboard
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: redis
+        app.kubernetes.io/version: 6.2.6
+        helm.sh/chart: redis-16.4.5
+      annotations:
+        checksum/configmap: 7a4c0a8d07bd85ebb896cd0f295adb0136bdfeae72cd9d1c1519d3bd5bded4e5
+        checksum/health: f20d092dc71b554bd0b9f177503d37ff7df6bd0d60cfe3036f9fb7d1407ea918
+        checksum/scripts: bdc361701d9a52768205e6cd347f8a64d999420170ad709d639636d3821122a0
+        checksum/secret: 5de7601d91f5dc5e50ff47f9aed2cc5981f946c739fdf06f1d7297b16ec1787e
+        kubectl.kubernetes.io/restartedAt: '2025-06-06T13:24:46.695Z'
+    spec:
+      volumes:
+        - name: start-scripts
+          configMap:
+            name: thingsboard-redis-scripts
+            defaultMode: 493
+        - name: health
+          configMap:
+            name: thingsboard-redis-health
+            defaultMode: 493
+        - name: config
+          configMap:
+            name: thingsboard-redis-configuration
+            defaultMode: 420
+        - name: redis-tmp-conf
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: redis-data
+          emptyDir: {}
+      containers:
+        - name: redis
+          image: docker.io/bitnami/redis:6.2.6-debian-10-r142
+          command:
+            - /bin/bash
+          args:
+            - '-c'
+            - /opt/bitnami/scripts/start-scripts/start-master.sh
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          env:
+            - name: BITNAMI_DEBUG
+              value: 'false'
+            - name: REDIS_REPLICATION_MODE
+              value: master
+            - name: ALLOW_EMPTY_PASSWORD
+              value: 'no'
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: thingsboard-redis
+                  key: redis-password
+            - name: REDIS_TLS_ENABLED
+              value: 'no'
+            - name: REDIS_PORT
+              value: '6379'
+          resources: {}
+          volumeMounts:
+            - name: start-scripts
+              mountPath: /opt/bitnami/scripts/start-scripts
+            - name: health
+              mountPath: /health
+            - name: redis-data
+              mountPath: /data
+            - name: config
+              mountPath: /opt/bitnami/redis/mounted-etc
+            - name: redis-tmp-conf
+              mountPath: /opt/bitnami/redis/etc/
+            - name: tmp
+              mountPath: /tmp
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - '-c'
+                - /health/ping_liveness_local.sh 5
+            initialDelaySeconds: 20
+            timeoutSeconds: 6
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - '-c'
+                - /health/ping_readiness_local.sh 1
+            initialDelaySeconds: 20
+            timeoutSeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1001
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: thingsboard-redis
+      serviceAccount: thingsboard-redis
+      securityContext:
+        fsGroup: 1001
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: master
+                    app.kubernetes.io/instance: thingsboard
+                    app.kubernetes.io/name: redis
+                topologyKey: kubernetes.io/hostname
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    field.cattle.io/publicEndpoints: '[{"addresses":["a30d8ce0abd1344fb9cf0e9a99ce1c33-5f689966a75b6be1.elb.af-south-1.amazonaws.com"],"port":5684,"protocol":"UDP","serviceName":"thingsboard-qa:thingsboard-coap","allNodes":false}]'
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+    service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: ThingsBoardClusterELB=ThingsBoardCoap
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: udp
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: stickiness.enabled=true,stickiness.type=source_ip
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+  creationTimestamp: "2024-12-05T14:52:06Z"
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  labels:
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: thingsboard
+    app.kubernetes.io/version: 3.5.1
+    helm.sh/chart: thingsboard-0.1.4-rc.51
+    k8slens-edit-resource-version: v1
+  name: thingsboard-coap
+  namespace: thingsboard-qa
+  resourceVersion: "169077683"
+  uid: 30d8ce0a-bd13-44fb-9cf0-e9a99ce1c330
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 172.20.170.46
+  clusterIPs:
+  - 172.20.170.46
+  externalTrafficPolicy: Local
+  healthCheckNodePort: 30736
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: coap-dtls
+    nodePort: 30128
+    port: 5684
+    protocol: UDP
+    targetPort: coap-dtls
+  selector:
+    app.kubernetes.io/instance: thingsboard-coap
+    app.kubernetes.io/name: thingsboard-coap
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - hostname: a30d8ce0abd1344fb9cf0e9a99ce1c33-5f689966a75b6be1.elb.af-south-1.amazonaws.com

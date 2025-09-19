@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  labels:
+    app.kubernetes.io/component: kafka
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kafka
+    app.kubernetes.io/version: 3.3.1
+    helm.sh/chart: kafka-19.1.5
+  name: thingsboard-kafka-headless
+  namespace: thingsboard-qa
+spec:
+  - None
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: tcp-client
+    port: 9092
+    protocol: TCP
+    targetPort: kafka-client
+  - name: tcp-internal
+    port: 9093
+    protocol: TCP
+    targetPort: kafka-internal
+  selector:
+    app.kubernetes.io/component: kafka
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/name: kafka
+  sessionAffinity: None
+  type: ClusterIP

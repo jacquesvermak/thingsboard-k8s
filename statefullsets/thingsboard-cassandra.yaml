@@ -1,0 +1,293 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: thingsboard-cassandra
+  namespace: thingsboard-qa
+  uid: 1ec76100-224b-4b61-ba54-abdf89bc3ddb
+  resourceVersion: '194590171'
+  generation: 89
+  creationTimestamp: '2025-07-19T11:50:46Z'
+  labels:
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: cassandra
+    app.kubernetes.io/version: 4.0.3
+    helm.sh/chart: cassandra-9.1.8
+    k10.kasten.io/actionType: snapshot
+    k10.kasten.io/appName: thingsboard-qa
+    k10.kasten.io/policyName: thingsboard-qa-backup
+    k8slens-edit-resource-version: v1
+  annotations:
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  selfLink: /apis/apps/v1/namespaces/thingsboard-qa/statefulsets/thingsboard-cassandra
+status:
+  observedGeneration: 89
+  replicas: 3
+  readyReplicas: 3
+  currentReplicas: 3
+  updatedReplicas: 3
+  currentRevision: thingsboard-cassandra-7b78c66679
+  updateRevision: thingsboard-cassandra-7b78c66679
+  collisionCount: 0
+  availableReplicas: 3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: thingsboard
+      app.kubernetes.io/name: cassandra
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: thingsboard
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: cassandra
+        app.kubernetes.io/version: 4.0.3
+        helm.sh/chart: cassandra-9.1.8
+      annotations:
+        kubectl.kubernetes.io/restartedAt: '2025-08-26T14:16:41.601Z'
+    spec:
+      volumes:
+        - name: cassandra-gc-logs
+          emptyDir: {}
+      containers:
+        - name: cassandra
+          image: docker.io/bitnami/cassandra:4.0.3-debian-10-r8
+          command:
+            - bash
+            - '-ec'
+            - >
+              # Node 0 is the password seeder
+
+              if [[ $POD_NAME =~ (.*)-0$ ]]; then
+                  echo "Setting node as password seeder"
+                  export CASSANDRA_PASSWORD_SEEDER=yes
+              else
+                  # Only node 0 will execute the startup initdb scripts
+                  export CASSANDRA_IGNORE_INITDB_SCRIPTS=1
+              fi
+
+              /opt/bitnami/scripts/cassandra/entrypoint.sh
+              /opt/bitnami/scripts/cassandra/run.sh
+          ports:
+            - name: intra
+              containerPort: 7000
+              protocol: TCP
+            - name: tls
+              containerPort: 7001
+              protocol: TCP
+            - name: jmx
+              containerPort: 7199
+              protocol: TCP
+            - name: cql
+              containerPort: 9042
+              protocol: TCP
+          env:
+            - name: BITNAMI_DEBUG
+              value: 'false'
+            - name: CASSANDRA_CLUSTER_NAME
+              value: cassandra
+            - name: CASSANDRA_SEEDS
+              value: >-
+                thingsboard-cassandra-0.thingsboard-cassandra-headless.thingsboard-qa.svc.cluster.local
+            - name: CASSANDRA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: thingsboard-cassandra
+                  key: cassandra-password
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: CASSANDRA_USER
+              value: cassandra
+            - name: CASSANDRA_NUM_TOKENS
+              value: '256'
+            - name: CASSANDRA_DATACENTER
+              value: dc1
+            - name: CASSANDRA_ENDPOINT_SNITCH
+              value: SimpleSnitch
+            - name: CASSANDRA_KEYSTORE_LOCATION
+              value: /opt/bitnami/cassandra/certs/keystore
+            - name: CASSANDRA_TRUSTSTORE_LOCATION
+              value: /opt/bitnami/cassandra/certs/truststore
+            - name: CASSANDRA_RACK
+              value: rack1
+            - name: CASSANDRA_TRANSPORT_PORT_NUMBER
+              value: '7000'
+            - name: CASSANDRA_JMX_PORT_NUMBER
+              value: '7199'
+            - name: CASSANDRA_CQL_PORT_NUMBER
+              value: '9042'
+            - name: CASSANDRA_MAX_HEAP_SIZE
+              value: 12g
+            - name: CASSANDRA_HEAP_NEWSIZE
+              value: 4g
+            - name: JVM_OPTS
+              value: >-
+                -Dcom.sun.management.jmxremote.authenticate=false
+                -Dcom.sun.management.jmxremote.ssl=false
+                -Dcassandra.native_transport_max_concurrent_connections=2048
+                -Dcassandra.native_transport_max_concurrent_connections_per_ip=1024
+            - name: CASSANDRA_AUTHENTICATOR
+              value: PasswordAuthenticator
+            - name: CASSANDRA_AUTHORIZER
+              value: CassandraAuthorizer
+            - name: CASSANDRA_CONCURRENT_WRITES
+              value: '256'
+            - name: CASSANDRA_CONCURRENT_READS
+              value: '128'
+            - name: CASSANDRA_CONCURRENT_COUNTER_WRITES
+              value: '256'
+            - name: CASSANDRA_NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS
+              value: '4096'
+            - name: CASSANDRA_NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_PER_IP
+              value: '2048'
+            - name: CASSANDRA_MEMTABLE_HEAP_SPACE_IN_MB
+              value: '4096'
+            - name: CASSANDRA_MEMTABLE_OFFHEAP_SPACE_IN_MB
+              value: '4096'
+            - name: CASSANDRA_COMMITLOG_TOTAL_SPACE_IN_MB
+              value: '16384'
+            - name: CASSANDRA_NATIVE_TRANSPORT_MAX_THREADS
+              value: '256'
+            - name: CASSANDRA_RPC_MAX_THREADS
+              value: '2048'
+            - name: CASSANDRA_RPC_MIN_THREADS
+              value: '16'
+            - name: CASSANDRA_BATCH_SIZE_WARN_THRESHOLD_IN_KB
+              value: '64'
+            - name: CASSANDRA_BATCH_SIZE_FAIL_THRESHOLD_IN_KB
+              value: '1280'
+            - name: CASSANDRA_REQUEST_TIMEOUT_IN_MS
+              value: '30000'
+            - name: CASSANDRA_WRITE_REQUEST_TIMEOUT_IN_MS
+              value: '10000'
+            - name: CASSANDRA_READ_REQUEST_TIMEOUT_IN_MS
+              value: '10000'
+            - name: CASSANDRA_COUNTER_WRITE_REQUEST_TIMEOUT_IN_MS
+              value: '30000'
+            - name: CASSANDRA_CONCURRENT_COMPACTORS
+              value: '4'
+            - name: CASSANDRA_COMPACTION_THROUGHPUT_MB_PER_SEC
+              value: '128'
+            - name: CASSANDRA_ENABLE_USER_DEFINED_FUNCTIONS
+              value: 'false'
+            - name: CASSANDRA_ENABLE_SCRIPTED_USER_DEFINED_FUNCTIONS
+              value: 'false'
+            - name: CASSANDRA_AUTO_SNAPSHOT
+              value: 'false'
+            - name: CASSANDRA_SNAPSHOT_BEFORE_COMPACTION
+              value: 'false'
+            - name: CASSANDRA_NATIVE_TRANSPORT_MAX_FRAME_SIZE_IN_MB
+              value: '512'
+            - name: CASSANDRA_COMMITLOG_SYNC
+              value: periodic
+            - name: CASSANDRA_COMMITLOG_SYNC_PERIOD_IN_MS
+              value: '10000'
+            - name: CASSANDRA_DISK_OPTIMIZATION_STRATEGY
+              value: ssd
+            - name: CASSANDRA_MEMTABLE_FLUSH_WRITERS
+              value: '4'
+            - name: CASSANDRA_CONCURRENT_MATERIALIZED_VIEW_WRITES
+              value: '64'
+            - name: CASSANDRA_FILE_CACHE_SIZE_IN_MB
+              value: '2048'
+            - name: CASSANDRA_BUFFER_POOL_USE_HEAP_IF_EXHAUSTED
+              value: 'true'
+            - name: CASSANDRA_DISK_ACCESS_MODE
+              value: mmap
+          resources:
+            limits:
+              cpu: '4'
+              memory: 20G
+            requests:
+              cpu: '2'
+              memory: 16G
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/cassandra
+            - name: cassandra-gc-logs
+              mountPath: /var/log/cassandra
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-ec'
+                - |
+                  nodetool status
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-ec'
+                - |
+                  nodetool status | grep -E "^UN\\s+${POD_IP}"
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 5
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1001
+            runAsNonRoot: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      serviceAccountName: thingsboard-node-sa
+      serviceAccount: thingsboard-node-sa
+      securityContext:
+        fsGroup: 1001
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: thingsboard
+                    app.kubernetes.io/name: cassandra
+                topologyKey: kubernetes.io/hostname
+      schedulerName: default-scheduler
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: data
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/instance: thingsboard
+          app.kubernetes.io/name: cassandra
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  serviceName: thingsboard-cassandra-headless
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 10
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain

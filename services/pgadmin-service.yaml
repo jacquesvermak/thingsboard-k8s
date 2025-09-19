@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    field.cattle.io/publicEndpoints: '[{"addresses":["a12cc6230ba4340b790ed61aea3b7f06-317085683.af-south-1.elb.amazonaws.com"],"port":80,"protocol":"TCP","serviceName":"thingsboard-qa:pgadmin-service","allNodes":false}]'
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"pgadmin-service","namespace":"thingsboard-qa"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":80}],"selector":{"app":"pgadmin"},"type":"LoadBalancer"}}
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  name: pgadmin-service
+  namespace: thingsboard-qa
+spec:
+  allocateLoadBalancerNodePorts: true
+  - 172.20.125.25
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 32308
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: pgadmin
+  sessionAffinity: None
+  type: LoadBalancer

@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: thingsboard-kafka-scripts
+  namespace: thingsboard-qa
+  uid: ba5ab4fa-9646-4478-897a-6b92e29ee10f
+  resourceVersion: '173682507'
+  creationTimestamp: '2024-12-05T14:52:06Z'
+  labels:
+    app.kubernetes.io/instance: thingsboard
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kafka
+    app.kubernetes.io/version: 3.3.1
+    helm.sh/chart: kafka-19.1.5
+  annotations:
+    meta.helm.sh/release-name: thingsboard
+    meta.helm.sh/release-namespace: thingsboard-qa
+  selfLink: /api/v1/namespaces/thingsboard-qa/configmaps/thingsboard-kafka-scripts
+spec: {}
+data:
+  setup.sh: |-
+    #!/bin/bash
+
+    ID="${MY_POD_NAME#"thingsboard-kafka-"}"
+    if [[ -f "/bitnami/kafka/data/meta.properties" ]]; then
+        export KAFKA_CFG_BROKER_ID="$(grep "broker.id" "/bitnami/kafka/data/meta.properties" | awk -F '=' '{print $2}')"
+    else
+        export KAFKA_CFG_BROKER_ID="$((ID + 0))"
+    fi
+
+    # Configure zookeeper client
+
+    exec /entrypoint.sh /run.sh
